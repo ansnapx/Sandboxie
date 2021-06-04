@@ -4,8 +4,8 @@ SANDBOXIE BUILD INSTRUCTIONS
 Please note: there is another ReadMe.txt in the \install\ folder that explains how to create the Sandboxie installers.
 
 1) Sandboxie builds under MS Visual Studio 2019.
-2) Install the Windows Driver Kit (WDK) for Windows 10, version 2004.
-	https://go.microsoft.com/fwlink/?linkid=2128854
+2) Install the Windows Driver Kit (WDK) 7601, set the WDKBASE=C:\WinDDK\7600.16385.1
+   http://download.microsoft.com/download/4/A/2/4A25C7D5-EFBE-4182-B6A9-AE6850409A78/GRMWDK_EN_7600_1.ISO
 3) The VS Solution File, Sandbox.sln, is in the source code root. Open this SLN in Visual Studio.
 
 Source Projects (in aplhabetical order)
