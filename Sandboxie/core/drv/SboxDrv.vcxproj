@@ -21,42 +21,30 @@
   <PropertyGroup Label="Globals">
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{4019C5EB-8D1E-40E4-B7D1-5601B4B27288}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='SbieDebug|Win32'" Label="Configuration">
-    <ConfigurationType>Driver</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
-    <TargetVersion>Windows7</TargetVersion>
-    <DriverType>WDM</DriverType>
-    <Driver_SpectreMitigation>false</Driver_SpectreMitigation>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='SbieDebug|x64'" Label="Configuration">
-    <ConfigurationType>Driver</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
-    <TargetVersion>Windows7</TargetVersion>
-    <DriverType>WDM</DriverType>
-    <Driver_SpectreMitigation>false</Driver_SpectreMitigation>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='SbieRelease|Win32'" Label="Configuration">
-    <ConfigurationType>Driver</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
-    <DriverTargetPlatform>
-    </DriverTargetPlatform>
-    <DriverType>WDM</DriverType>
-    <TargetVersion>Windows7</TargetVersion>
-    <Driver_SpectreMitigation>false</Driver_SpectreMitigation>
+    <PlatformToolset>v142</PlatformToolset>
+    <SpectreMitigation>false</SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='SbieRelease|x64'" Label="Configuration">
-    <ConfigurationType>Driver</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
-    <TargetVersion>Windows7</TargetVersion>
-    <DriverType>WDM</DriverType>
-    <Driver_SpectreMitigation>false</Driver_SpectreMitigation>
+    <PlatformToolset>v142</PlatformToolset>
+    <SpectreMitigation>false</SpectreMitigation>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -83,24 +71,32 @@
     <GenerateManifest>false</GenerateManifest>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
     <TargetName>SbieDrv</TargetName>
+    <IncludePath>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\crt;$(WDKBASE)\inc\api;$(IncludePath)</IncludePath>
+    <LibraryPath>$(WDKBASE)\lib\wnet\i386;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='SbieDebug|x64'">
     <TargetExt>.sys</TargetExt>
     <GenerateManifest>false</GenerateManifest>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
     <TargetName>SbieDrv</TargetName>
+    <IncludePath>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\crt;$(WDKBASE)\inc\api;$(IncludePath)</IncludePath>
+    <LibraryPath>$(WDKBASE)\lib\wnet\amd64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='SbieRelease|Win32'">
     <TargetExt>.sys</TargetExt>
     <GenerateManifest>false</GenerateManifest>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
     <TargetName>SbieDrv</TargetName>
+    <IncludePath>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\crt;$(WDKBASE)\inc\api;$(IncludePath)</IncludePath>
+    <LibraryPath>$(WDKBASE)\lib\wnet\i386;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='SbieRelease|x64'">
     <TargetExt>.sys</TargetExt>
     <GenerateManifest>false</GenerateManifest>
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
     <TargetName>SbieDrv</TargetName>
+    <IncludePath>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\crt;$(WDKBASE)\inc\api;$(IncludePath)</IncludePath>
+    <LibraryPath>$(WDKBASE)\lib\wnet\amd64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='SbieDebug|Win32'">
     <ClCompile>
@@ -108,8 +104,8 @@
       <AdditionalOptions>/Wv:18 %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <PreprocessorDefinitions>POOL_NX_OPTIN=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>OLD_DDK=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\api;$(WDKBASE)\inc\crt;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -125,6 +121,7 @@
       </BaseAddress>
       <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>$(WDKBASE)\lib\wxp\i386</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -140,8 +137,8 @@
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
       <AdditionalOptions>/Wv:18 %(AdditionalOptions)</AdditionalOptions>
-      <PreprocessorDefinitions>POOL_NX_OPTIN=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>OLD_DDK=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\api;$(WDKBASE)\inc\crt;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -167,6 +164,7 @@
       </BaseAddress>
       <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>$(WDKBASE)\lib\wnet\amd64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -180,8 +178,8 @@
     <ClCompile>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <PreprocessorDefinitions>POOL_NX_OPTIN=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\api;$(WDKBASE)\inc\crt;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>OLD_DDK=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -197,6 +195,7 @@
       </BaseAddress>
       <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>$(WDKBASE)\lib\wxp\i386</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -210,8 +209,8 @@
     <ClCompile>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <PreprocessorDefinitions>POOL_NX_OPTIN=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(WDKBASE)\inc\ddk;$(WDKBASE)\inc\api;$(WDKBASE)\inc\crt;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>OLD_DDK=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Native</SubSystem>
@@ -237,6 +236,7 @@
       </BaseAddress>
       <OptimizeReferences>false</OptimizeReferences>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>$(WDKBASE)\lib\wnet\amd64</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>

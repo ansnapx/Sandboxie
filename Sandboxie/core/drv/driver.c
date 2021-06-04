@@ -142,8 +142,9 @@ _FX NTSTATUS DriverEntry(
 {
     BOOLEAN ok = TRUE;
 
+#ifndef OLD_DDK
 	ExInitializeDriverRuntime(DrvRtPoolNxOptIn);
-
+#endif
     //
     // initialize global driver variables
     //

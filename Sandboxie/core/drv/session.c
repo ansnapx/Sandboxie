@@ -639,7 +639,7 @@ _FX NTSTATUS Session_Api_MonitorControl(PROCESS *proc, ULONG64 *parms)
     API_MONITOR_CONTROL_ARGS *args = (API_MONITOR_CONTROL_ARGS *)parms;
     ULONG *in_flag;
     ULONG *out_flag;
-    ULONG *out_used;
+    //ULONG *out_used;
     SESSION *session;
     KIRQL irql;
     BOOLEAN EnableMonitor;

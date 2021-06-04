@@ -604,7 +604,7 @@ _FX NTSTATUS Ipc_Api_OpenDynamicPort(PROCESS* proc, ULONG64* parms)
 
     if (pArgs->port_name.val == NULL)
         return STATUS_INVALID_PARAMETER;
-    try {
+    __try {
         ProbeForRead(pArgs->port_name.val, sizeof(WCHAR) * DYNAMIC_PORT_NAME_CHARS, sizeof(WCHAR));
         wmemcpy(portName, pArgs->port_name.val, DYNAMIC_PORT_NAME_CHARS - 1);
         portName[DYNAMIC_PORT_NAME_CHARS - 1] = L'\0';

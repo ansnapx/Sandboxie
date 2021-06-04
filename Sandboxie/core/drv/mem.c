@@ -162,12 +162,19 @@ _FX void Mem_FreeLockResource(PERESOURCE *ppResource)
 //---------------------------------------------------------------------------
 
 #ifndef _WIN64
+#ifndef OLD_DDK
 int __cdecl memcmp(
 	_In_reads_bytes_(_Size) void const* _Buf1,
 	_In_reads_bytes_(_Size) void const* _Buf2,
 	_In_                    size_t      _Size
+#else
+int __cdecl memcmp(
+	void const* _Buf1,
+	void const* _Buf2,
+	size_t      _Size
+#endif//OLD_DDK
 )
 {
 	return (RtlCompareMemory(_Buf1, _Buf2, _Size) == _Size) ? 0 : 1;
 }
-#endif
+#endif//_WIN64

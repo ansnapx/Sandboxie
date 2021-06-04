@@ -110,6 +110,8 @@ enum {
     DLL_IMAGE_OFFICE_EXCEL,
     DLL_IMAGE_FLASH_PLAYER_SANDBOX,
     DLL_IMAGE_PLUGIN_CONTAINER,
+    DLL_IMAGE_OTHER_WEB_BROWSER,
+    DLL_IMAGE_OTHER_MAIL_CLIENT,
     DLL_IMAGE_LAST
 };
 
@@ -205,6 +207,8 @@ typedef struct _THREAD_DATA {
     LPARAM          gui_dde_post_lparam;
 
     ULONG           gui_create_window;
+
+    BOOLEAN         gui_hooks_installed;
 
     BOOL            gui_should_suppress_msgbox;
 
@@ -364,6 +368,8 @@ ULONG SbieDll_MatchPath2(WCHAR path_code, const WCHAR *path, BOOLEAN bCheckObjec
 
 
 void Dll_InitExeEntry(void);
+
+ULONG Dll_GetImageType(const WCHAR* ImageName);
 
 int Dll_NlsStrCmp(const WCHAR *s1, const WCHAR *s2, ULONG len);
 
@@ -762,6 +768,8 @@ BOOLEAN Config_InitPatternList(const WCHAR* setting, LIST* list);
 
 NTSTATUS Config_GetSettingsForImageName(
     const WCHAR* setting, WCHAR* value, ULONG value_size, const WCHAR* deftext);
+
+BOOLEAN Config_String2Bool(const WCHAR* value, BOOLEAN defval);
 
 BOOLEAN Config_GetSettingsForImageName_bool(const WCHAR* setting, BOOLEAN defval);
 

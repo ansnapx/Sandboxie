@@ -36,7 +36,6 @@
 // Functions
 //---------------------------------------------------------------------------
 
-
 static BOOL Proc_CreateProcessInternalW(
     HANDLE hToken,
     const WCHAR *lpApplicationName,
@@ -971,8 +970,8 @@ finish:
     }
 
     {
-        WCHAR msg[512];
-        Sbie_snwprintf(msg, 512, L"CreateProcess: %s (%s); err=%d", lpApplicationName ? lpApplicationName : L"[noName]", lpCommandLine ? lpCommandLine : L"[noCmd]", ok ? 0 : err);
+        WCHAR msg[1024];
+        Sbie_snwprintf(msg, 1024, L"CreateProcess: %s (%s); err=%d", lpApplicationName ? lpApplicationName : L"[noName]", lpCommandLine ? lpCommandLine : L"[noCmd]", ok ? 0 : err);
         SbieApi_MonitorPut2(MONITOR_OTHER | MONITOR_TRACE, msg, FALSE);
     }
 
@@ -1404,8 +1403,8 @@ finish:
     }
 
     {
-        WCHAR msg[512];
-        Sbie_snwprintf(msg, 512, L"CreateProcess: %s (%s); err=%d", lpApplicationName ? lpApplicationName : L"[noName]", lpCommandLine ? lpCommandLine : L"[noCmd]", ok ? 0 : err);
+        WCHAR msg[1024];
+        Sbie_snwprintf(msg, 1024, L"CreateProcess: %s (%s); err=%d", lpApplicationName ? lpApplicationName : L"[noName]", lpCommandLine ? lpCommandLine : L"[noCmd]", ok ? 0 : err);
         SbieApi_MonitorPut2(MONITOR_OTHER | MONITOR_TRACE, msg, FALSE);
     }
 
@@ -2150,6 +2149,7 @@ _FX BOOLEAN Proc_CheckMailer(const WCHAR *ImagePath, BOOLEAN IsBoxedPath)
     BOOLEAN ok;
     WCHAR *tmp;
     const WCHAR *imgName;
+    ULONG imgType;
 
     BOOLEAN should_check_openfilepath = FALSE;
 
@@ -2162,18 +2162,15 @@ _FX BOOLEAN Proc_CheckMailer(const WCHAR *ImagePath, BOOLEAN IsBoxedPath)
     else
         imgName = ImagePath;
 
+    imgType = Dll_GetImageType(imgName);
+
     //
     // check if image name matches a well-known email program
     //
 
-    if (_wcsicmp(imgName, L"thunderbird.exe") == 0      ||
-        _wcsicmp(imgName, L"msimn.exe") == 0            ||
-        _wcsicmp(imgName, L"outlook.exe") == 0          ||
-        _wcsicmp(imgName, L"winmail.exe") == 0          ||
-        _wcsicmp(imgName, L"wlmail.exe") == 0           ||
-        _wcsicmp(imgName, L"IncMail.exe") == 0          ||
-        _wcsicmp(imgName, L"eudora.exe") == 0           ||
-        _wcsicmp(imgName, L"thebat.exe") == 0           ||
+    if (imgType == DLL_IMAGE_OFFICE_OUTLOOK     ||
+        imgType == DLL_IMAGE_WINDOWS_LIVE_MAIL  ||
+        imgType == DLL_IMAGE_OTHER_MAIL_CLIENT  ||
         0)
     {
         should_check_openfilepath = TRUE;
@@ -2215,12 +2212,12 @@ _FX BOOLEAN Proc_CheckMailer(const WCHAR *ImagePath, BOOLEAN IsBoxedPath)
     // ignore other common browsers
     //
 
-    if (_wcsicmp(imgName, L"rundll32.exe") == 0     ||
-        _wcsicmp(imgName, L"opera.exe") == 0        ||
-        _wcsicmp(imgName, L"iexplore.exe") == 0     ||
-        _wcsicmp(imgName, L"firefox.exe") == 0      ||
-        _wcsicmp(imgName, L"chrome.exe") == 0       ||
-        0                                           ) {
+    if (_wcsicmp(imgName, L"rundll32.exe") == 0  ||
+        imgType == DLL_IMAGE_INTERNET_EXPLORER   ||
+        imgType == DLL_IMAGE_MOZILLA_FIREFOX     ||
+        imgType == DLL_IMAGE_GOOGLE_CHROME       ||
+        imgType == DLL_IMAGE_OTHER_WEB_BROWSER   ||
+        0) {
 
         should_check_openfilepath = FALSE;
     }
