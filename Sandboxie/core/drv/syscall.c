@@ -253,6 +253,8 @@ _FX BOOLEAN Syscall_Init_List(void)
         for (name_len = 0; (name_len < 64) && name[name_len]; ++name_len)
             ;
 
+        //DbgPrint("    Found SysCall %s\n", name);
+
         entry = NULL;
 
         //
@@ -857,22 +859,9 @@ _FX NTSTATUS Syscall_Api_Invoke(PROCESS *proc, ULONG64 *parms)
             if (hConnection)
             {
                 WCHAR trace_str[128];
-#ifndef OLD_DDK
-                swprintf(trace_str, L"[syscall] %.*S, status = 0x%X, handle = %X; ", //59 chars + entry->name
+                RtlStringCbPrintfW(trace_str, sizeof(trace_str), L"[syscall] %.*S, status = 0x%X, handle = %X; ", //59 chars + entry->name
                     max(strlen(entry->name), 64), entry->name,
                     status, hConnection);
-#else
-#ifdef _WIN64
-				swprintf(trace_str, L"[syscall] %.*S, status = 0x%X", //59 chars + entry->name
-					max(strlen(entry->name), 64), entry->name,
-					status);
-#else 
-				swprintf(trace_str, L"[syscall] %.*S, status = 0x%X, handle = %X; ", //59 chars + entry->name
-					max(strlen(entry->name), 64), entry->name,
-					status, hConnection);
-#endif//_WIN64
-
-#endif//OLD_DDK
                 const WCHAR* strings[3] = { trace_str, puStr ? puStr->Buffer : NULL, NULL };
                 ULONG lengths[3] = { wcslen(trace_str), puStr ? puStr->Length / 2 : 0, 0 };
                 Session_MonitorPutEx(MONITOR_IPC | MONITOR_TRACE, strings, lengths, PsGetCurrentProcessId(), PsGetCurrentThreadId());
@@ -883,7 +872,7 @@ _FX NTSTATUS Syscall_Api_Invoke(PROCESS *proc, ULONG64 *parms)
         if (!traced && ((proc->call_trace & TRACE_ALLOW) || ((status != STATUS_SUCCESS) && (proc->call_trace & TRACE_DENY))))
         {
             WCHAR trace_str[128];
-            swprintf(trace_str, L"[syscall] %.*S, status = 0x%X", //59 chars + entry->name
+            RtlStringCbPrintfW(trace_str, sizeof(trace_str), L"[syscall] %.*S, status = 0x%X", //59 chars + entry->name
                 max(strlen(entry->name), 64), entry->name,
                 status);
             const WCHAR* strings[2] = { trace_str, NULL };
